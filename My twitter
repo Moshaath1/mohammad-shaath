@@ -1,0 +1,40 @@
+
+<html>
+  <head>
+    <title>Twitter Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Twitter</h1>
+      </div>
+      <div class="main">
+        <div class="tweet-form">
+          <form action="tweet.php" method="post">
+            <textarea name="tweet" placeholder="What's happening?"></textarea>
+            <input type="submit" value="Tweet" />
+          </form>
+        </div>
+        <div class="tweets">
+          <?php
+            // Connect to the database
+            $dbc = mysqli_connect('localhost', 'username', 'password', 'twitter');
+            // Retrieve the tweets from the database
+            $query = "SELECT * FROM tweets ORDER BY date_created DESC";
+            $data = mysqli_query($dbc, $query);
+            // Loop through the array of tweets, formatting them as HTML
+            while ($row = mysqli_fetch_array($data)) {
+              // Display the tweet
+              echo '<div class="tweet">';
+              echo '<p>' . $row['tweet'] . '</p>';
+              echo '<span class="date">' . $row['date_created'] . '</span>';
+              echo '</div>';
+            }
+            mysqli_close($dbc);
+          ?>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
